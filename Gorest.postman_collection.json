@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "f48ecf94-01d1-4892-b2f2-d6359b7e8b69",
+		"name": "Gorest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46608957",
+		"_collection_link": "https://harshini-2752932.postman.co/workspace/ba4a4195-4c1d-408e-9f51-28b6d5267ff2/collection/46608957-f48ecf94-01d1-4892-b2f2-d6359b7e8b69?action=share&source=collection_link&creator=46608957"
+	},
+	"item": [
+		{
+			"name": "View User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/public/v2/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Creation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random name\r",
+							"let firstNames = [\"Harshini\", \"Dharshini\", \"Ravi\", \"Kumar\", \"Priya\", \"Anand\"];\r",
+							"let lastNames = [\"Prasad\", \"Rao\", \"Iyer\", \"Sharma\", \"Nair\"];\r",
+							"let randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + \" \" + lastNames[Math.floor(Math.random() * lastNames.length)];\r",
+							"\r",
+							"// Generate random email\r",
+							"let randomEmail = \"user_\" + Math.floor(Math.random() * 100000) + \"@testmail.com\";\r",
+							"\r",
+							"// Random gender\r",
+							"let genders = [\"male\", \"female\"];\r",
+							"let randomGender = genders[Math.floor(Math.random() * genders.length)];\r",
+							"\r",
+							"// Random status\r",
+							"let statuses = [\"active\", \"inactive\"];\r",
+							"let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];\r",
+							"\r",
+							"// Save values to environment variables\r",
+							"pm.environment.set(\"name\", randomName);\r",
+							"pm.environment.set(\"email\", randomEmail);\r",
+							"pm.environment.set(\"gender\", randomGender);\r",
+							"pm.environment.set(\"status\", randomStatus);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 - User Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"// Save user_id from the POST response\r",
+							"pm.environment.set(\"user_id\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"User ID is numeric\", function () {\r",
+							"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"gender\": \"{{gender}}\",\r\n  \"status\": \"{{status}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/public/v2/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status Verification",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random name\r",
+							"let firstNames = [\"Harshini\", \"Dharshini\", \"Ravi\", \"Kumar\", \"Priya\", \"Anand\"];\r",
+							"let lastNames = [\"Prasad\", \"Rao\", \"Iyer\", \"Sharma\", \"Nair\"];\r",
+							"let randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + \" \" + lastNames[Math.floor(Math.random() * lastNames.length)];\r",
+							"\r",
+							"// Generate random email\r",
+							"let randomEmail = \"user_\" + Math.floor(Math.random() * 100000) + \"@testmail.com\";\r",
+							"\r",
+							"// Random gender\r",
+							"let genders = [\"male\", \"female\"];\r",
+							"let randomGender = genders[Math.floor(Math.random() * genders.length)];\r",
+							"\r",
+							"// Random status\r",
+							"let statuses = [\"pending\", \"noactive\"];\r",
+							"let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];\r",
+							"\r",
+							"// Save to environment variables\r",
+							"pm.environment.set(\"name\", randomName);\r",
+							"pm.environment.set(\"email\", randomEmail);\r",
+							"pm.environment.set(\"gender\", randomGender);\r",
+							"pm.environment.set(\"status\", randomStatus);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"gender\": \"{{gender}}\",\r\n  \"status\": \"{{status}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/public/v2/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patch User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 - User Patched\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"// Check if ID matches the one we created earlier\r",
+							"pm.test(\"User ID matches created user\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get(\"user_id\")));\r",
+							"});\r",
+							"\r",
+							"// Check if email is patched correctly\r",
+							"pm.test(\"Email updated successfully\", function () {\r",
+							"    pm.expect(jsonData.email).to.include(\"patched_\");\r",
+							"});\r",
+							"\r",
+							"// Optional: Verify gender and status still valid\r",
+							"pm.test(\"Gender and status are valid\", function () {\r",
+							"    pm.expect([\"male\", \"female\"]).to.include(jsonData.gender);\r",
+							"    pm.expect([\"active\", \"inactive\"]).to.include(jsonData.status);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"patched_{{email}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 - User Updated\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"pm.test(\"User ID matches\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get(\"user_id\")));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Updated {{name}}\",\r\n  \"email\": \"updated_{{email}}\",\r\n  \"gender\": \"{{gender}}\",\r\n  \"status\": \"active\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204 - User Deleted\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
