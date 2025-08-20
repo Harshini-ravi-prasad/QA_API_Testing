@@ -39,7 +39,7 @@ This environment already contains:
 
 base_url = https://gorest.co.in
 
-authToken =<token>
+authToken =token
 
  No manual editing is required unless you want to update the token later.
 
